@@ -28,23 +28,23 @@ builder.WebHost.ConfigureKestrel(options =>
 var app = builder.Build();
 
 // Redirecionar a raiz para o GitHub
-app.UseRewriter(new RewriteOptions().AddRedirect("^$", "https://github.com/caiquemain/takeablip"));
+app.UseRewriter(new RewriteOptions().AddRedirect("^$", "https://github.com/caiquemain/takeablip", 301));
 
 // Configurar middleware de pipeline HTTP
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "GitHub Repo Lister API v1");
-        options.RoutePrefix = "swagger"; // Swagger estará em /swagger
+        options.RoutePrefix = "documentation"; // Swagger estará em /documentation
     });
 }
 
+// Adicionar HTTPS apenas se não for produção
 if (!app.Environment.IsProduction())
 {
-    app.UseHttpsRedirection(); // Redirecionamento para HTTPS no ambiente de produção
+    app.UseHttpsRedirection();
 }
 
 app.UseAuthorization();
