@@ -28,7 +28,7 @@ Antes de iniciar o projeto, verifique se você possui os seguintes pré-requisit
 ### 1. Clonar o Repositório
 
 Clone este repositório para o seu ambiente local:
-git clone https://github.com/seu-usuario/GitHubRepoListerAPI.git
+git clone https://github.com/caiquemain/takeablip/.git
 
 ### 2. Restaurar as Dependências
 
