@@ -12,11 +12,13 @@ builder.Services.AddHttpClient(); // Registrar IHttpClientFactory
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configuração do XML para documentação
 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 builder.Services.AddSwaggerGen(options =>
 {
-    options.IncludeXmlComments(xmlPath);
+    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    options.SupportNonNullableReferenceTypes();
 });
 
 // Configuração explícita da porta exigida pelo Render
