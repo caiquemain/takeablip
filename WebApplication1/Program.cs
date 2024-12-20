@@ -1,3 +1,9 @@
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Adicione serviços ao contêiner
