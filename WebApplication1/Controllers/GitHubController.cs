@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace GitHubRepoListerAPI.Controllers
 {
     /// <summary>
-    /// Controlador para listar e filtrar repositórios do GitHub da organizacao Takenet.
+    /// Controlador para listar e filtrar repositorios do GitHub da organizacao Takenet.
     /// </summary>
     [ApiController]
     [Route("api/github")]
@@ -36,7 +36,7 @@ namespace GitHubRepoListerAPI.Controllers
         private const string GitHubApiUrl = "https://api.github.com/orgs/takenet/repos";
 
         /// <summary>
-        /// Lista todos os repositorios disponíveis na organizacao Takenet.
+        /// Lista todos os repositorios disponiveis na organizacao Takenet.
         /// </summary>
         /// <remarks>
         /// Este metodo retorna uma lista completa de todos os repositorios, independentemente da linguagem ou outros filtros.
@@ -53,18 +53,18 @@ namespace GitHubRepoListerAPI.Controllers
         }
 
         /// <summary>
-        /// Filtra repositórios por linguagem, nome, ordena por data de criacao e limita os resultados.
+        /// Filtra repositorios por linguagem, nome, ordena por data de criacao e limita os resultados.
         /// </summary>
         /// <param name="language">Linguagem de programacao para filtrar (ex.: C#, Java).</param>
         /// <param name="name">Parte do nome do repositorio para buscar.</param>
         /// <param name="sortOrder">Ordem de classificacao: asc (crescente) ou desc (decrescente).</param>
-        /// <param name="limit">Número maximo de resultados a serem retornados.</param>
+        /// <param name="limit">Numero maximo de resultados a serem retornados.</param>
         /// <remarks>
-        /// Este método permite filtrar repositorios da organizacao Takenet com base em criterios específicos:
+        /// Este metodo permite filtrar repositorios da organizacao Takenet com base em criterios especificos:
         /// - **Linguagem**: Filtra os repositorios que utilizam a linguagem especificada.
         /// - **Nome**: Retorna repositorios cujo nome contem o texto informado.
         /// - **Ordenacao**: Define se os resultados devem ser ordenados por data de criacao em ordem crescente (asc) ou decrescente (desc).
-        /// - **Limite**: Define o numero máximo de repositorios a serem retornados.
+        /// - **Limite**: Define o numero maximo de repositorios a serem retornados.
         /// </remarks>
         /// <response code="200">Repositorios filtrados retornados com sucesso.</response>
         /// <response code="500">Erro ao buscar os repositorios no GitHub.</response>
