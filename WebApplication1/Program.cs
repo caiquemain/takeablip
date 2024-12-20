@@ -33,10 +33,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Desativar redirecionamento para HTTPS no ambiente de produção
 if (!app.Environment.IsProduction())
 {
-    app.UseHttpsRedirection();
+    app.UseHttpsRedirection(); // Redirecionamento para HTTPS no ambiente de produção
 }
 
 app.UseAuthorization();
