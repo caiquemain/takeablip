@@ -13,6 +13,12 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
 });
 
+// Configuração explícita da porta exigida pelo Render
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080); // Porta padrão do Render
+});
+
 var app = builder.Build();
 
 // Configurar middleware de pipeline HTTP
@@ -27,7 +33,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// Desativar redirecionamento para HTTPS no ambiente de produção
+if (!app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseAuthorization();
 app.MapControllers();
 
