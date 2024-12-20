@@ -70,10 +70,10 @@ namespace GitHubRepoListerAPI.Controllers
         /// <response code="500">Erro ao buscar os repositórios no GitHub.</response>
         [HttpGet("repositories/filter")]
         public async Task<IActionResult> FilterRepositories(
-            [FromQuery] string? language,
-            [FromQuery] string? name,
-            [FromQuery] string? sortOrder = "asc",
-            [FromQuery] int? limit = null)
+    [FromQuery] string? language,
+    [FromQuery] string? name,
+    [FromQuery] string? sortOrder = "asc",
+    [FromQuery] int? limit = null)
         {
             var repositories = await GetCachedRepositories();
             if (repositories == null) return StatusCode(500, "Erro ao buscar os repositórios do GitHub.");
@@ -109,7 +109,17 @@ namespace GitHubRepoListerAPI.Controllers
                 filteredRepositories = filteredRepositories.Take(limit.Value).ToList();
             }
 
-            return Ok(filteredRepositories);
+            // Transform the repositories to include owner_avatar_url as a single property
+            var transformedRepositories = filteredRepositories.Select(r => new
+            {
+                r.FullName,
+                r.Description,
+                r.Language,
+                r.CreatedAt,
+                OwnerAvatarUrl = r.Owner.AvatarUrl // Flatten the owner property
+            }).ToList();
+
+            return Ok(transformedRepositories);
         }
 
         private async Task<List<GitHubRepository>?> GetCachedRepositories()
