@@ -42,16 +42,18 @@ namespace GitHubRepoListerAPI.Controllers
         }
 
         /// <summary>
-        /// Filtra repositórios por linguagem, nome ou ordena por data de criação.
+        /// Filtra repositórios por linguagem, nome, ordena por data de criação e limita os resultados.
         /// </summary>
         /// <param name="language">Linguagem de programação para filtrar (ex.: C#, Java).</param>
         /// <param name="name">Parte do nome do repositório para buscar.</param>
         /// <param name="sortOrder">Ordem de classificação: asc (crescente) ou desc (decrescente).</param>
+        /// <param name="limit">Número máximo de resultados a serem retornados.</param>
         /// <remarks>
         /// Este método permite filtrar repositórios da organização Takenet com base em critérios específicos:
         /// - **Linguagem**: Filtra os repositórios que utilizam a linguagem especificada.
         /// - **Nome**: Retorna repositórios cujo nome contém o texto informado.
         /// - **Ordenação**: Define se os resultados devem ser ordenados por data de criação em ordem crescente (asc) ou decrescente (desc).
+        /// - **Limite**: Define o número máximo de repositórios a serem retornados.
         /// </remarks>
         /// <response code="200">Repositórios filtrados retornados com sucesso.</response>
         /// <response code="500">Erro ao buscar os repositórios no GitHub.</response>
@@ -59,7 +61,8 @@ namespace GitHubRepoListerAPI.Controllers
         public async Task<IActionResult> FilterRepositories(
             [FromQuery] string? language,
             [FromQuery] string? name,
-            [FromQuery] string? sortOrder = "asc")
+            [FromQuery] string? sortOrder = "asc",
+            [FromQuery] int? limit = null)
         {
             var repositories = await GetCachedRepositories();
             if (repositories == null) return StatusCode(500, "Erro ao buscar os repositórios do GitHub.");
@@ -69,13 +72,17 @@ namespace GitHubRepoListerAPI.Controllers
             // Filtrar por linguagem
             if (!string.IsNullOrEmpty(language))
             {
-                filteredRepositories = filteredRepositories.Where(r => r.Language?.Equals(language, StringComparison.OrdinalIgnoreCase) == true).ToList();
+                filteredRepositories = filteredRepositories
+                    .Where(r => r.Language?.Equals(language, StringComparison.OrdinalIgnoreCase) == true)
+                    .ToList();
             }
 
             // Filtrar por nome
             if (!string.IsNullOrEmpty(name))
             {
-                filteredRepositories = filteredRepositories.Where(r => r.FullName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredRepositories = filteredRepositories
+                    .Where(r => r.FullName.Contains(name, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
             }
 
             // Ordenar por data de criação
@@ -84,6 +91,12 @@ namespace GitHubRepoListerAPI.Controllers
                 "desc" => filteredRepositories.OrderByDescending(r => r.CreatedAt).ToList(),
                 _ => filteredRepositories.OrderBy(r => r.CreatedAt).ToList()
             };
+
+            // Limitar resultados
+            if (limit.HasValue && limit.Value > 0)
+            {
+                filteredRepositories = filteredRepositories.Take(limit.Value).ToList();
+            }
 
             return Ok(filteredRepositories);
         }
