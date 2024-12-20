@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace GitHubRepoListerAPI.Controllers
 {
     /// <summary>
-    /// Controlador para listar e filtrar repositórios do GitHub da organização Takenet.
+    /// Controlador para listar e filtrar repositórios do GitHub da organizacao Takenet.
     /// </summary>
     [ApiController]
     [Route("api/github")]
@@ -36,13 +36,13 @@ namespace GitHubRepoListerAPI.Controllers
         private const string GitHubApiUrl = "https://api.github.com/orgs/takenet/repos";
 
         /// <summary>
-        /// Lista todos os repositórios disponíveis na organização Takenet.
+        /// Lista todos os repositorios disponíveis na organizacao Takenet.
         /// </summary>
         /// <remarks>
-        /// Este método retorna uma lista completa de todos os repositórios, independentemente da linguagem ou outros filtros.
+        /// Este metodo retorna uma lista completa de todos os repositorios, independentemente da linguagem ou outros filtros.
         /// </remarks>
-        /// <response code="200">Repositórios retornados com sucesso.</response>
-        /// <response code="500">Erro ao buscar os repositórios no GitHub.</response>
+        /// <response code="200">Repositorios retornados com sucesso.</response>
+        /// <response code="500">Erro ao buscar os repositorios no GitHub.</response>
         [HttpGet("repositories/listall")]
         public async Task<IActionResult> ListAllRepositories()
         {
@@ -53,21 +53,21 @@ namespace GitHubRepoListerAPI.Controllers
         }
 
         /// <summary>
-        /// Filtra repositórios por linguagem, nome, ordena por data de criação e limita os resultados.
+        /// Filtra repositórios por linguagem, nome, ordena por data de criacao e limita os resultados.
         /// </summary>
-        /// <param name="language">Linguagem de programação para filtrar (ex.: C#, Java).</param>
-        /// <param name="name">Parte do nome do repositório para buscar.</param>
-        /// <param name="sortOrder">Ordem de classificação: asc (crescente) ou desc (decrescente).</param>
-        /// <param name="limit">Número máximo de resultados a serem retornados.</param>
+        /// <param name="language">Linguagem de programacao para filtrar (ex.: C#, Java).</param>
+        /// <param name="name">Parte do nome do repositorio para buscar.</param>
+        /// <param name="sortOrder">Ordem de classificacao: asc (crescente) ou desc (decrescente).</param>
+        /// <param name="limit">Número maximo de resultados a serem retornados.</param>
         /// <remarks>
-        /// Este método permite filtrar repositórios da organização Takenet com base em critérios específicos:
-        /// - **Linguagem**: Filtra os repositórios que utilizam a linguagem especificada.
-        /// - **Nome**: Retorna repositórios cujo nome contém o texto informado.
-        /// - **Ordenação**: Define se os resultados devem ser ordenados por data de criação em ordem crescente (asc) ou decrescente (desc).
-        /// - **Limite**: Define o número máximo de repositórios a serem retornados.
+        /// Este método permite filtrar repositorios da organizacao Takenet com base em criterios específicos:
+        /// - **Linguagem**: Filtra os repositorios que utilizam a linguagem especificada.
+        /// - **Nome**: Retorna repositorios cujo nome contem o texto informado.
+        /// - **Ordenacao**: Define se os resultados devem ser ordenados por data de criacao em ordem crescente (asc) ou decrescente (desc).
+        /// - **Limite**: Define o numero máximo de repositorios a serem retornados.
         /// </remarks>
-        /// <response code="200">Repositórios filtrados retornados com sucesso.</response>
-        /// <response code="500">Erro ao buscar os repositórios no GitHub.</response>
+        /// <response code="200">Repositorios filtrados retornados com sucesso.</response>
+        /// <response code="500">Erro ao buscar os repositorios no GitHub.</response>
         [HttpGet("repositories/filter")]
         public async Task<IActionResult> FilterRepositories(
     [FromQuery] string? language,
@@ -96,7 +96,7 @@ namespace GitHubRepoListerAPI.Controllers
                     .ToList();
             }
 
-            // Ordenar por data de criação
+            // Ordenar por data de criacao
             filteredRepositories = sortOrder?.ToLower() switch
             {
                 "desc" => filteredRepositories.OrderByDescending(r => r.CreatedAt).ToList(),
@@ -109,14 +109,14 @@ namespace GitHubRepoListerAPI.Controllers
                 filteredRepositories = filteredRepositories.Take(limit.Value).ToList();
             }
 
-            // Transform the repositories to include owner_avatar_url as a single property
+            // Transformar os repositórios para incluir owner_avatar_url como uma única propriedade
             var transformedRepositories = filteredRepositories.Select(r => new
             {
                 r.FullName,
                 r.Description,
                 r.Language,
                 r.CreatedAt,
-                OwnerAvatarUrl = r.Owner.AvatarUrl // Flatten the owner property
+                OwnerAvatarUrl = r.Owner.AvatarUrl 
             }).ToList();
 
             return Ok(transformedRepositories);
