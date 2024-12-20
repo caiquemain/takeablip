@@ -19,6 +19,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
     options.SupportNonNullableReferenceTypes();
+    options.DescribeAllParametersInCamelCase();
+    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    options.SupportNonNullableReferenceTypes();
 });
 
 // Configuração explícita da porta exigida pelo Render
