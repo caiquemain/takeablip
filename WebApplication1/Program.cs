@@ -36,7 +36,7 @@ builder.Services.AddSwaggerGen(options =>
 // Configuração explícita da porta exigida pelo Render
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(8080); // Porta padrão do Render
+    options.ListenAnyIP(8080);
 });
 
 var app = builder.Build();
