@@ -20,6 +20,17 @@ namespace GitHubRepoListerAPI.Controllers
         {
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("GitHubRepoListerAPI", "1.0"));
+
+            // Set the GitHub token from environment variable
+            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            else
+            {
+                Console.WriteLine("GitHub Token not found. Please set it as an environment variable.");
+            }
         }
 
         private const string GitHubApiUrl = "https://api.github.com/orgs/takenet/repos";
